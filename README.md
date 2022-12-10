@@ -165,6 +165,5 @@ module.exports = { api, apikey, botName, owner, ownerNomer, ownerName, email, yo
 - Ronzz YT ( Base & Author ) 
 - Saipul Anuar ( Mastah )
 - Danzz Coding ( Mastah )
-- Bochil Team ( Mastah )
 - My Subscriber
 - All Konten Kreator Bot
