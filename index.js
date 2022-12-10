@@ -2631,7 +2631,7 @@ let anu = await fetchJson('https://raw.githubusercontent.com/BochilTeam/database
 let result = anu[Math.floor(Math.random() * anu.length)]
 tebakgambar.push({id: sender, jawaban: result.jawaban})
 fs.writeFileSync('./database/game/tebakgambar.json', JSON.stringify(tebakgambar))
-ronzz.sendMessage(from, { image: { url: result.img }, caption: `Silahkan jawab pertanyaan di atas ini\n\nDeskripsi : ${result.deskripsi}\nWaktu : 60 Detik`}, { quoted: msg })
+ronzz.sendMessage(from, { image: { url: result.img }, caption: `Silahkan jawab pertanyaan di atas ini\n\nDeskripsi : ${result.deskripsi}\nWaktu : 60 Detik`, buttons: [{ buttonId: '.nyerah', buttonText: { displayText: 'Nyerah' }, type: 1 },{ buttonId: '.hint', buttonText: { displayText: 'Hint' }, type: 1 }], footer: footer}, { quoted: msg })
 console.log("Jawaban: " + result.jawaban)
 await sleep(60000)
 if (cekGame("id", sender, tebakgambar) !== null) {
@@ -2651,7 +2651,7 @@ let anu = await fetchJson('https://raw.githubusercontent.com/BochilTeam/database
 let result = anu[Math.floor(Math.random() * anu.length)]
 tebakkata.push({id: sender, jawaban: result.jawaban})
 fs.writeFileSync('./database/game/tebakkata.json', JSON.stringify(tebakkata))
-ronzz.sendMessage(from, { text: `Silahkan jawab pertanyaan di bawah ini\n\nSoal : ${result.soal}\nWaktu : 60 Detik`}, { quoted: msg })
+ronzz.sendMessage(from, { text: `Silahkan jawab pertanyaan di bawah ini\n\nSoal : ${result.soal}\nWaktu : 60 Detik`, buttons: [{ buttonId: '.nyerah', buttonText: { displayText: 'Nyerah' }, type: 1 },{ buttonId: '.hint', buttonText: { displayText: 'Hint' }, type: 1 }], footer: footer}, { quoted: msg })
 console.log("Jawaban: " + result.jawaban)
 await sleep(60000)
 if (cekGame("id", sender, tebakkata) !== null) {
@@ -2671,7 +2671,7 @@ let anu = await fetchJson('https://raw.githubusercontent.com/BochilTeam/database
 let result = anu[Math.floor(Math.random() * anu.length)]
 tebakbendera.push({id: sender, jawaban: result.name})
 fs.writeFileSync('./database/game/tebakbendera.json', JSON.stringify(tebakbendera))
-ronzz.sendMessage(from, { image: { url: result.img }, caption: `Bendera apakah itu?\n\nWaktu : 60 Detik`}, { quoted: msg })
+ronzz.sendMessage(from, { image: { url: result.img }, caption: `Bendera apakah itu?\n\nWaktu : 60 Detik`, buttons: [{ buttonId: '.nyerah', buttonText: { displayText: 'Nyerah' }, type: 1 },{ buttonId: '.hint', buttonText: { displayText: 'Hint' }, type: 1 }], footer: footer}, { quoted: msg })
 console.log("Jawaban: " + result.name)
 await sleep(60000)
 if (cekGame("id", sender, tebakbendera) !== null) {
@@ -2691,7 +2691,7 @@ let anu = await fetchJson('https://raw.githubusercontent.com/BochilTeam/database
 let result = anu[Math.floor(Math.random() * anu.length)]
 tebakkalimat.push({id: sender, jawaban: result.jawaban})
 fs.writeFileSync('./database/game/tebakkalimat.json', JSON.stringify(tebakkalimat))
-ronzz.sendMessage(from, { text: `Silahkan jawab pertanyaan di bawah ini\n\nSoal : ${result.soal}\nWaktu : 60 Detik`}, { quoted: msg })
+ronzz.sendMessage(from, { text: `Silahkan jawab pertanyaan di bawah ini\n\nSoal : ${result.soal}\nWaktu : 60 Detik`, buttons: [{ buttonId: '.nyerah', buttonText: { displayText: 'Nyerah' }, type: 1 },{ buttonId: '.hint', buttonText: { displayText: 'Hint' }, type: 1 }], footer: footer}, { quoted: msg })
 console.log("Jawaban: " + result.jawaban)
 await sleep(60000)
 if (cekGame("id", sender, tebakkalimat) !== null) {
@@ -2711,7 +2711,7 @@ let anu = await fetchJson('https://raw.githubusercontent.com/BochilTeam/database
 let result = anu[Math.floor(Math.random() * anu.length)]
 siapakahaku.push({id: sender, jawaban: result.jawaban})
 fs.writeFileSync('./database/game/siapakahaku.json', JSON.stringify(siapakahaku))
-ronzz.sendMessage(from, { text: `Silahkan jawab pertanyaan di bawah ini\n\nSoal : ${result.soal}\nWaktu : 60 Detik`}, { quoted: msg })
+ronzz.sendMessage(from, { text: `Silahkan jawab pertanyaan di bawah ini\n\nSoal : ${result.soal}\nWaktu : 60 Detik`, buttons: [{ buttonId: '.nyerah', buttonText: { displayText: 'Nyerah' }, type: 1 },{ buttonId: '.hint', buttonText: { displayText: 'Hint' }, type: 1 }], footer: footer}, { quoted: msg })
 console.log("Jawaban: " + result.jawaban)
 await sleep(60000)
 if (cekGame("id", sender, siapakahaku) !== null) {
@@ -2731,7 +2731,7 @@ let anu = await fetchJson('https://raw.githubusercontent.com/BochilTeam/database
 let result = anu[Math.floor(Math.random() * anu.length)]
 tebakkimia.push({id: sender, jawaban: result.lambang})
 fs.writeFileSync('./database/game/tebakkimia.json', JSON.stringify(tebakkimia))
-ronzz.sendMessage(from, { text: `Silahkan jawab pertanyaan di bawah ini\n\nSoal : Lambang ${result.unsur} Adalah?\nWaktu : 60 Detik`}, { quoted: msg })
+ronzz.sendMessage(from, { text: `Silahkan jawab pertanyaan di bawah ini\n\nSoal : Lambang ${result.unsur} Adalah?\nWaktu : 60 Detik`, buttons: [{ buttonId: '.nyerah', buttonText: { displayText: 'Nyerah' }, type: 1 },{ buttonId: '.hint', buttonText: { displayText: 'Hint' }, type: 1 }], footer: footer}, { quoted: msg })
 console.log("Jawaban: " + result.lambang)
 await sleep(60000)
 if (cekGame("id", sender, tebakkimia) !== null) {
@@ -2751,7 +2751,7 @@ let anu = await fetchJson('https://raw.githubusercontent.com/BochilTeam/database
 let result = anu[Math.floor(Math.random() * anu.length)]
 tebaklirik.push({id: sender, jawaban: result.jawaban})
 fs.writeFileSync('./database/game/tebaklirik.json', JSON.stringify(tebaklirik))
-ronzz.sendMessage(from, { text: `Silahkan jawab pertanyaan di bawah ini\n\nSoal : ${result.soal}\nWaktu : 60 Detik`}, { quoted: msg })
+ronzz.sendMessage(from, { text: `Silahkan jawab pertanyaan di bawah ini\n\nSoal : ${result.soal}\nWaktu : 60 Detik`, buttons: [{ buttonId: '.nyerah', buttonText: { displayText: 'Nyerah' }, type: 1 },{ buttonId: '.hint', buttonText: { displayText: 'Hint' }, type: 1 }], footer: footer}, { quoted: msg })
 console.log("Jawaban: " + result.jawaban)
 await sleep(60000)
 if (cekGame("id", sender, tebaklirik) !== null) {
@@ -2771,7 +2771,7 @@ let anu = await fetchJson('https://raw.githubusercontent.com/BochilTeam/database
 let result = anu[Math.floor(Math.random() * anu.length)]
 tebaktebakan.push({id: sender, jawaban: result.jawaban})
 fs.writeFileSync('./database/game/tebaktebakan.json', JSON.stringify(tebaktebakan))
-ronzz.sendMessage(from, { text: `Silahkan jawab pertanyaan di bawah ini\n\nSoal : ${result.soal}\nWaktu : 60 Detik`}, { quoted: msg })
+ronzz.sendMessage(from, { text: `Silahkan jawab pertanyaan di bawah ini\n\nSoal : ${result.soal}\nWaktu : 60 Detik`, buttons: [{ buttonId: '.nyerah', buttonText: { displayText: 'Nyerah' }, type: 1 },{ buttonId: '.hint', buttonText: { displayText: 'Hint' }, type: 1 }], footer: footer}, { quoted: msg })
 console.log("Jawaban: " + result.jawaban)
 await sleep(60000)
 if (cekGame("id", sender, tebaktebakan) !== null) {
@@ -2791,7 +2791,7 @@ let anu = await fetchJson('https://raw.githubusercontent.com/BochilTeam/database
 let result = anu[Math.floor(Math.random() * anu.length)]
 susunkata.push({id: sender, jawaban: result.jawaban})
 fs.writeFileSync('./database/game/susunkata.json', JSON.stringify(susunkata))
-ronzz.sendMessage(from, { text: `Silahkan jawab pertanyaan di bawah ini\n\nSoal : ${result.soal}\nType : ${result.tipe}\nWaktu : 60 Detik`}, { quoted: msg })
+ronzz.sendMessage(from, { text: `Silahkan jawab pertanyaan di bawah ini\n\nSoal : ${result.soal}\nType : ${result.tipe}\nWaktu : 60 Detik`, buttons: [{ buttonId: '.nyerah', buttonText: { displayText: 'Nyerah' }, type: 1 },{ buttonId: '.hint', buttonText: { displayText: 'Hint' }, type: 1 }], footer: footer}, { quoted: msg })
 console.log("Jawaban: " + result.jawaban)
 await sleep(60000)
 if (cekGame("id", sender, susunkata) !== null) {
@@ -2811,7 +2811,7 @@ let anu = await fetchJson('https://raw.githubusercontent.com/BochilTeam/database
 let result = anu[Math.floor(Math.random() * anu.length)]
 tekateki.push({id: sender, jawaban: result.jawaban})
 fs.writeFileSync('./database/game/tekateki.json', JSON.stringify(tekateki))
-ronzz.sendMessage(from, { text: `Silahkan jawab pertanyaan di bawah ini\n\nSoal : ${result.soal}\nWaktu : 60 Detik`}, { quoted: msg })
+ronzz.sendMessage(from, { text: `Silahkan jawab pertanyaan di bawah ini\n\nSoal : ${result.soal}\nWaktu : 60 Detik`, buttons: [{ buttonId: '.nyerah', buttonText: { displayText: 'Nyerah' }, type: 1 },{ buttonId: '.hint', buttonText: { displayText: 'Hint' }, type: 1 }], footer: footer}, { quoted: msg })
 console.log("Jawaban: " + result.jawaban)
 await sleep(60000)
 if (cekGame("id", sender, tekateki) !== null) {
