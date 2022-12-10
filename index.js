@@ -2212,13 +2212,9 @@ break
 case 'delete':
 if (!isGroup) return reply(mess.group)
 if (!isGroupAdmins && !isOwner) return reply(mess.admin)
-if (!isQuotedMsg) return reply(`Reply chat yang ingin dihapus`)
-if (quotedMsg.fromMe) {
+if (!isQuotedMsg) return reply("Reply chat dari bot yang ingin dihapus")
+if (!quotedMsg.fromMe) return reply("Chat tersebut bukan dari bot")
 ronzz.sendMessage(from, { delete: { fromMe: true, id: quotedMsg.id, remoteJid: from }})
-} else {
-if (!isBotGroupAdmins) return reply(mess.botAdmin)
-ronzz.sendMessage(from, { delete: quotedMsg.id })
-}
 addCmd(command, 1, db_dashboard)
 break
 
