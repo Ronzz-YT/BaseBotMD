@@ -31,6 +31,8 @@ const moment = require("moment-timezone");
 const java_script = require("javascript-obfuscator");
 const request = require('request')
 const os = require('os');
+const similarity = require('similarity');
+const threshold = 0.72
 
 // Database
 let antilink = JSON.parse(fs.readFileSync('./database/bot/antilink.json'));
@@ -430,7 +432,9 @@ ronzz.sendMessage(from, { text: "🎮 Tebak Gambar 🎮\n\nJawaban Benar 🎉\n\
 let delTebakG = {id: sender, jawaban: cekGame("jawaban", sender, tebakgambar)}
 tebakgambar.splice(delTebakG, 1)
 fs.writeFileSync('./database/game/tebakgambar.json', JSON.stringify(tebakgambar, null, 2))
-} else reply("❌ Jawaban Salah")
+} else if (similarity(jwbny, jwbn) >= threshold && cekGame("id", sender, tebakgambar) !== null) {
+reply('*Dikit lagi!*')
+} else if (cekGame("id", sender, tebakgambar) !== null) return reply("❌ Jawaban Salah")
 }
 
 if (msg.message && cekGame("id", sender, tebakkata) !== null && !isCmd) {
@@ -441,7 +445,9 @@ ronzz.sendMessage(from, { text: "🎮 Tebak Kata 🎮\n\nJawaban Benar 🎉\n\nI
 let delTebakK = {id: sender, jawaban: cekGame("jawaban", sender, tebakgambar)}
 tebakkata.splice(delTebakK, 1)
 fs.writeFileSync('./database/game/tebakkata.json', JSON.stringify(tebakkata, null, 2))
-} else reply("❌ Jawaban Salah")
+} else if (similarity(jwbny, jwbn) >= threshold && cekGame("id", sender, tebakkata) !== null) {
+reply('*Dikit lagi!*')
+} else if (cekGame("id", sender, tebakkata) !== null) return reply("❌ Jawaban Salah")
 }
 
 if (msg.message && cekGame("id", sender, tebakbendera) !== null && !isCmd) {
@@ -452,7 +458,9 @@ ronzz.sendMessage(from, { text: "🎮 Tebak Bendera 🎮\n\nJawaban Benar 🎉\n
 let delTebakB = {id: sender, jawaban: cekGame("jawaban", sender, tebakbendera)}
 tebakbendera.splice(delTebakB, 1)
 fs.writeFileSync('./database/game/tebakbendera.json', JSON.stringify(tebakbendera, null, 2))
-} else reply("❌ Jawaban Salah")
+} else if (similarity(jwbny, jwbn) >= threshold && cekGame("id", sender, tebakbendera) !== null) {
+reply('*Dikit lagi!*')
+} else if (cekGame("id", sender, tebakbendera) !== null) return reply("❌ Jawaban Salah")
 }
 
 if (msg.message && cekGame("id", sender, tebakkalimat) !== null && !isCmd) {
@@ -463,7 +471,9 @@ ronzz.sendMessage(from, { text: "🎮 Tebak Kalimat 🎮\n\nJawaban Benar 🎉\n
 let delTebakK = {id: sender, jawaban: cekGame("jawaban", sender, tebakkalimat)}
 tebakkalimat.splice(delTebakK, 1)
 fs.writeFileSync('./database/game/tebakkalimat.json', JSON.stringify(tebakkalimat, null, 2))
-} else reply("❌ Jawaban Salah")
+} else if (similarity(jwbny, jwbn) >= threshold && cekGame("id", sender, tebakkalimat) !== null) {
+reply('*Dikit lagi!*')
+} else if (cekGame("id", sender, tebakkalimat) !== null) return reply("❌ Jawaban Salah")
 }
 
 if (msg.message && cekGame("id", sender, siapakahaku) !== null && !isCmd) {
@@ -474,7 +484,9 @@ ronzz.sendMessage(from, { text: "🎮 Siapakah Aku 🎮\n\nJawaban Benar 🎉\n\
 let delSiapaKah = {id: sender, jawaban: cekGame("jawaban", sender, siapakahaku)}
 siapakahaku.splice(delSiapaKah, 1)
 fs.writeFileSync('./database/game/siapakahaku.json', JSON.stringify(siapakahaku, null, 2))
-} else reply("❌ Jawaban Salah")
+} else if (similarity(jwbny, jwbn) >= threshold && cekGame("id", sender, siapakahaku) !== null) {
+reply('*Dikit lagi!*')
+} else if (cekGame("id", sender, siapakahaku) !== null) return reply("❌ Jawaban Salah")
 }
 
 if (msg.message && cekGame("id", sender, tebakkimia) !== null && !isCmd) {
@@ -485,7 +497,9 @@ ronzz.sendMessage(from, { text: "🎮 Tebak Kimia 🎮\n\nJawaban Benar 🎉\n\n
 let delTebakK = {id: sender, jawaban: cekGame("jawaban", sender, tebakkimia)}
 tebakkimia.splice(delTebakK, 1)
 fs.writeFileSync('./database/game/tebakkimia.json', JSON.stringify(tebakkimia, null, 2))
-} else reply("❌ Jawaban Salah")
+} else if (similarity(jwbny, jwbn) >= threshold && cekGame("id", sender, tebakkimia) !== null) {
+reply('*Dikit lagi!*')
+} else if (cekGame("id", sender, tebakkimia) !== null) return reply("❌ Jawaban Salah")
 }
 
 if (msg.message && cekGame("id", sender, tebaklirik) !== null && !isCmd) {
@@ -496,7 +510,9 @@ ronzz.sendMessage(from, { text: "🎮 Tebak Lirik 🎮\n\nJawaban Benar 🎉\n\n
 let delTebakL = {id: sender, jawaban: cekGame("jawaban", sender, tebaklirik)}
 tebaklirik.splice(delTebakL, 1)
 fs.writeFileSync('./database/game/tebaklirik.json', JSON.stringify(tebaklirik, null, 2))
-} else reply("❌ Jawaban Salah")
+} else if (similarity(jwbny, jwbn) >= threshold && cekGame("id", sender, tebaklirik) !== null) {
+reply('*Dikit lagi!*')
+} else if (cekGame("id", sender, tebaklirik) !== null) return reply("❌ Jawaban Salah")
 }
 
 if (msg.message && cekGame("id", sender, tebaktebakan) !== null && !isCmd) {
@@ -507,7 +523,9 @@ ronzz.sendMessage(from, { text: "🎮 Tebak Tebakan 🎮\n\nJawaban Benar 🎉\n
 let delTebakT = {id: sender, jawaban: cekGame("jawaban", sender, tebaktebakan)}
 tebaktebakan.splice(delTebakT, 1)
 fs.writeFileSync('./database/game/tebaktebakan.json', JSON.stringify(tebaktebakan, null, 2))
-} else reply("❌ Jawaban Salah")
+} else if (similarity(jwbny, jwbn) >= threshold && cekGame("id", sender, tebaktebakan) !== null) {
+reply('*Dikit lagi!*')
+} else if (cekGame("id", sender, tebaktebakan) !== null) return reply("❌ Jawaban Salah")
 }
 
 if (msg.message && cekGame("id", sender, susunkata) !== null && !isCmd) {
@@ -518,7 +536,9 @@ ronzz.sendMessage(from, { text: "🎮 Susun Kata 🎮\n\nJawaban Benar 🎉\n\nI
 let delSusunK = {id: sender, jawaban: cekGame("jawaban", sender, susunkata)}
 susunkata.splice(delSusunK, 1)
 fs.writeFileSync('./database/game/susunkata.json', JSON.stringify(susunkata, null, 2))
-} else reply("❌ Jawaban Salah")
+} else if (similarity(jwbny, jwbn) >= threshold && cekGame("id", sender, susunkata) !== null) {
+reply('*Dikit lagi!*')
+} else if (cekGame("id", sender, susunkata) !== null) return reply("❌ Jawaban Salah")
 }
 
 if (msg.message && cekGame("id", sender, tekateki) !== null && !isCmd) {
@@ -529,7 +549,9 @@ ronzz.sendMessage(from, { text: "🎮 Teka Teki 🎮\n\nJawaban Benar 🎉\n\nIn
 let delTekaT = {id: sender, jawaban: cekGame("jawaban", sender, tekateki)}
 tekateki.splice(delTekaT, 1)
 fs.writeFileSync('./database/game/tekateki.json', JSON.stringify(tekateki, null, 2))
-} else reply("❌ Jawaban Salah")
+} else if (similarity(jwbny, jwbn) >= threshold && cekGame("id", sender, tekateki) !== null) {
+reply('*Dikit lagi!*')
+} else if (cekGame("id", sender, tekateki) !== null) return reply("❌ Jawaban Salah")
 }
 
 //Auto Block Nomor Luar Negeri
@@ -2798,6 +2820,108 @@ let delTekaT = {id: sender, jawaban: cekGame("jawaban", sender, tekateki)}
 tekateki.splice(delTekaT, 1)
 fs.writeFileSync('./database/game/tekateki.json', JSON.stringify(tekateki, null, 2))
 }
+}
+addCmd(command, 1, db_dashboard)
+break
+
+case 'nyerah': case 'menyerah':{
+if (cekGame("id", sender, tebakgambar) !== null) {
+ronzz.sendMessage(from, { text: `Yahh ${command}😪\nJawaban : ${cekGame("jawaban", sender, tebakgambar)}`, buttons: [{ buttonId: '.tebakgambar', buttonText: { displayText: "Main Lagi" }, type: 1 }], footer: footer }, { quoted: msg })
+let delTebakG = {id: sender, jawaban: cekGame("jawaban", sender, tebakgambar)}
+tebakgambar.splice(delTebakG, 1)
+fs.writeFileSync('./database/game/tebakgambar.json', JSON.stringify(tebakgambar, null, 2))
+} else if (cekGame("id", sender, tebakkata) !== null) {
+ronzz.sendMessage(from, { text: `Yahh ${command}😪\nJawaban : ${cekGame("jawaban", sender, tebakkata)}`, buttons: [{ buttonId: '.tebakkata', buttonText: { displayText: "Main Lagi" }, type: 1 }], footer: footer }, { quoted: msg })
+let delTebakK = {id: sender, jawaban: cekGame("jawaban", sender, tebakkata)}
+tebakkata.splice(delTebakK, 1)
+fs.writeFileSync('./database/game/tebakkata.json', JSON.stringify(tebakkata, null, 2))
+} else if (cekGame("id", sender, tebakbendera) !== null) {
+ronzz.sendMessage(from, { text: `Yahh ${command}😪\nJawaban : ${cekGame("jawaban", sender, tebakbendera)}`, buttons: [{ buttonId: '.tebakbendera', buttonText: { displayText: "Main Lagi" }, type: 1 }], footer: footer }, { quoted: msg })
+let delTebakB = {id: sender, jawaban: cekGame("jawaban", sender, tebakbendera)}
+tebakbendera.splice(delTebakB, 1)
+fs.writeFileSync('./database/game/tebakbendera.json', JSON.stringify(tebakbendera, null, 2))
+} else if (cekGame("id", sender, tebakkalimat) !== null) {
+ronzz.sendMessage(from, { text: `Yahh ${command}😪\nJawaban : ${cekGame("jawaban", sender, tebakkalimat)}`, buttons: [{ buttonId: '.tebakkalimat', buttonText: { displayText: "Main Lagi" }, type: 1 }], footer: footer }, { quoted: msg })
+let delTebakK = {id: sender, jawaban: cekGame("jawaban", sender, tebakkalimat)}
+tebakkalimat.splice(delTebakK, 1)
+fs.writeFileSync('./database/game/tebakkalimat.json', JSON.stringify(tebakkalimat, null, 2))
+} else if (cekGame("id", sender, siapakahaku) !== null) {
+ronzz.sendMessage(from, { text: `Yahh ${command}😪\nJawaban : ${cekGame("jawaban", sender, siapakahaku)}`, buttons: [{ buttonId: '.siapakahaku', buttonText: { displayText: "Main Lagi" }, type: 1 }], footer: footer }, { quoted: msg })
+let delSiapaK = {id: sender, jawaban: cekGame("jawaban", sender, siapakahaku)}
+siapakahaku.splice(delSiapaK, 1)
+fs.writeFileSync('./database/game/siapakahaku.json', JSON.stringify(siapakahaku, null, 2))
+} else if (cekGame("id", sender, tebakkimia) !== null) {
+ronzz.sendMessage(from, { text: `Yahh ${command}😪\nJawaban : ${cekGame("jawaban", sender, tebakkimia)}`, buttons: [{ buttonId: '.tebakkimia', buttonText: { displayText: "Main Lagi" }, type: 1 }], footer: footer }, { quoted: msg })
+let delTebakK = {id: sender, jawaban: cekGame("jawaban", sender, tebakkimia)}
+tebakkimia.splice(delTebakK, 1)
+fs.writeFileSync('./database/game/tebakkimia.json', JSON.stringify(tebakkimia, null, 2))
+} else if (cekGame("id", sender, tebaklirik) !== null) {
+ronzz.sendMessage(from, { text: `Yahh ${command}😪\nJawaban : ${cekGame("jawaban", sender, tebaklirik)}`, buttons: [{ buttonId: '.tebaklirik', buttonText: { displayText: "Main Lagi" }, type: 1 }], footer: footer }, { quoted: msg })
+let delTebakL = {id: sender, jawaban: cekGame("jawaban", sender, tebaklirik)}
+tebaklirik.splice(delTebakL, 1)
+fs.writeFileSync('./database/game/tebaklirik.json', JSON.stringify(tebaklirik, null, 2))
+} else if (cekGame("id", sender, tebaktebakan) !== null) {
+ronzz.sendMessage(from, { text: `Yahh ${command}😪\nJawaban : ${cekGame("jawaban", sender, tebaktebakan)}`, buttons: [{ buttonId: '.tebaktebakan', buttonText: { displayText: "Main Lagi" }, type: 1 }], footer: footer }, { quoted: msg })
+let delTebakT = {id: sender, jawaban: cekGame("jawaban", sender, tebaktebakan)}
+tebaktebakan.splice(delTebakT, 1)
+fs.writeFileSync('./database/game/tebaktebakan.json', JSON.stringify(tebaktebakan, null, 2))
+} else if (cekGame("id", sender, susunkata) !== null) {
+ronzz.sendMessage(from, { text: `Yahh ${command}😪\nJawaban : ${cekGame("jawaban", sender, susunkata)}`, buttons: [{ buttonId: '.susunkata', buttonText: { displayText: "Main Lagi" }, type: 1 }], footer: footer }, { quoted: msg })
+let delSusunK = {id: sender, jawaban: cekGame("jawaban", sender, susunkata)}
+susunkata.splice(delSusunK, 1)
+fs.writeFileSync('./database/game/susunkata.json', JSON.stringify(susunkata, null, 2))
+} else if (cekGame("id", sender, tekateki) !== null) {
+ronzz.sendMessage(from, { text: `Yahh ${command}😪\nJawaban : ${cekGame("jawaban", sender, tekateki)}`, buttons: [{ buttonId: '.tekateki', buttonText: { displayText: "Main Lagi" }, type: 1 }], footer: footer }, { quoted: msg })
+let delTekaT = {id: sender, jawaban: cekGame("jawaban", sender, tekateki)}
+tekateki.splice(delTekaT, 1)
+fs.writeFileSync('./database/game/tekateki.json', JSON.stringify(tekateki, null, 2))
+} else reply('Kamu tidak ada sesi game yang belum terselesaikan')
+}
+addCmd(command, 1, db_dashboard)
+break
+
+case 'hint':{
+if (cekGame("id", sender, tebakgambar) !== null) {
+let jwbn = cekGame("jawaban", sender, tebakgambar)
+let jwbny = jwbn.replace(/[AIUEOaiueo]/g, '_')
+reply(jwbny)
+} else if (cekGame("id", sender, tebakkata) !== null) {
+let jwbn = cekGame("jawaban", sender, tebakkata)
+let jwbny = jwbn.replace(/[AIUEOaiueo]/g, '_')
+reply(jwbny)
+} else if (cekGame("id", sender, tebakbendera) !== null) {
+let jwbn = cekGame("jawaban", sender, tebakbendera)
+let jwbny = jwbn.replace(/[AIUEOaiueo]/g, '_')
+reply(jwbny)
+} else if (cekGame("id", sender, tebakkalimat) !== null) {
+let jwbn = cekGame("jawaban", sender, tebakkalimat)
+let jwbny = jwbn.replace(/[AIUEOaiueo]/g, '_')
+reply(jwbny)
+} else if (cekGame("id", sender, siapakahaku) !== null) {
+let jwbn = cekGame("jawaban", sender, siapakahaku)
+let jwbny = jwbn.replace(/[AIUEOaiueo]/g, '_')
+reply(jwbny)
+} else if (cekGame("id", sender, tebakkimia) !== null) {
+let jwbn = cekGame("jawaban", sender, tebakkimia)
+let jwbny = jwbn.replace(/[AIUEOaiueo]/g, '_')
+reply(jwbny)
+} else if (cekGame("id", sender, tebaklirik) !== null) {
+let jwbn = cekGame("jawaban", sender, tebaklirik)
+let jwbny = jwbn.replace(/[AIUEOaiueo]/g, '_')
+reply(jwbny)
+} else if (cekGame("id", sender, tebaktebakan) !== null) {
+let jwbn = cekGame("jawaban", sender, tebaktebakan)
+let jwbny = jwbn.replace(/[AIUEOaiueo]/g, '_')
+reply(jwbny)
+} else if (cekGame("id", sender, susunkata) !== null) {
+let jwbn = cekGame("jawaban", sender, susunkata)
+let jwbny = jwbn.replace(/[AIUEOaiueo]/g, '_')
+reply(jwbny)
+} else if (cekGame("id", sender, tekateki) !== null) {
+let jwbn = cekGame("jawaban", sender, tekateki)
+let jwbny = jwbn.replace(/[AIUEOaiueo]/g, '_')
+reply(jwbny)
+} else reply('Kamu tidak ada sesi game yang belum terselesaikan')
 }
 addCmd(command, 1, db_dashboard)
 break
