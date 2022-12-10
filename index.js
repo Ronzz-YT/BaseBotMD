@@ -9,7 +9,6 @@
 	@ Ronzz YT [ Base & Author ]
 	@ Saipul Anuar [ Mastah ]
 	@ Danzz Coding [ Mastah ]
-	@ Bochil Team [ Mastah ]
 	@ Penyedia Module
 	@ And My Subscriber
 */
@@ -50,6 +49,8 @@ let daftarlist = []
 let db_spam = []
 
 //Database game
+let asahotak = JSON.parse(fs.readFileSync("./database/game/asahotak.json"));
+let caklontong = JSON.parse(fs.readFileSync("./database/game/caklontong.json"));
 let tebakgambar = JSON.parse(fs.readFileSync("./database/game/tebakgambar.json"));
 let tebakkata = JSON.parse(fs.readFileSync("./database/game/tebakkata.json"));
 let tebakbendera = JSON.parse(fs.readFileSync("./database/game/tebakbendera.json"));
@@ -420,8 +421,35 @@ if (tiga[i].id == dua){x1 = i}})
 if (x1 !== false) {
 if (satu == "id"){ return tiga[x1].id }
 if (satu == "jawaban"){ return tiga[x1].jawaban }
+if (satu == "deskripsi"){ return tiga[x1].deskripsi }
 }
 if (x1 == false) { return null } 
+}
+
+if (msg.message && cekGame("id", sender, asahotak) !== null && !isCmd) {
+let jwbny = budy.toLowerCase()
+let jwbn = cekGame("jawaban", sender, asahotak).toLowerCase()
+if ((budy) && [jwbn].includes(jwbny)) {
+ronzz.sendMessage(from, { text: "🎮 Asah Otak 🎮\n\nJawaban Benar 🎉\n\nIngin bermain lagi? Klik button di bawah", buttons: [{ buttonId: '.asahotak', buttonText: { displayText: "Main Lagi" }, type: 1 }], footer: footer }, { quoted: msg })
+let delAsahO = {id: sender, jawaban: cekGame("jawaban", sender, asahotak)}
+asahotak.splice(delAsahO, 1)
+fs.writeFileSync('./database/game/asahotak.json', JSON.stringify(asahotak, null, 2))
+} else if (similarity(jwbny, jwbn) >= threshold && cekGame("id", sender, asahotak) !== null) {
+reply('*Dikit lagi!*')
+} else if (cekGame("id", sender, asahotak) !== null) return reply("❌ Jawaban Salah")
+}
+
+if (msg.message && cekGame("id", sender, caklontong) !== null && !isCmd) {
+let jwbny = budy.toLowerCase()
+let jwbn = cekGame("jawaban", sender, caklontong).toLowerCase()
+if ((budy) && [jwbn].includes(jwbny)) {
+ronzz.sendMessage(from, { text: "🎮 Cak Lontong 🎮\n\nJawaban Benar 🎉\n\nIngin bermain lagi? Klik button di bawah", buttons: [{ buttonId: '.caklontong', buttonText: { displayText: "Main Lagi" }, type: 1 }], footer: footer }, { quoted: msg })
+let delCakL = {id: sender, jawaban: cekGame("jawaban", sender, caklontong), deskripsi: cekGame("deskripsi", sender, caklontong)}
+caklontong.splice(delCakL, 1)
+fs.writeFileSync('./database/game/caklontong.json', JSON.stringify(caklontong, null, 2))
+} else if (similarity(jwbny, jwbn) >= threshold && cekGame("id", sender, caklontong) !== null) {
+reply('*Dikit lagi!*')
+} else if (cekGame("id", sender, caklontong) !== null) return reply("❌ Jawaban Salah")
 }
 
 if (msg.message && cekGame("id", sender, tebakgambar) !== null && !isCmd) {
@@ -769,6 +797,8 @@ ${readmore}
 - ${prefix}komikku
 
 *GAME MENU*
+- ${prefix}asahotak
+- ${prefix}caklontong
 - ${prefix}tebakgambar
 - ${prefix}tebakkata
 - ${prefix}tebakbendera
@@ -2624,10 +2654,50 @@ ronzz.sendMessage(from, { location: { jpegThumbnail: await reSize(gam, 300, 150)
 addCmd(command, 1, db_dashboard)
 break
 
+case 'asahotak':{
+if (cekUser("id", sender) == null) return sendMessRegis(from)
+if (cekGame("id", sender, asahotak) !== null) return reply("Kamu masih ada sesi yang belum di selesaikan.")
+let anu = await fetchJson('https://raw.githubusercontent.com/Ronzz-Ofc/database/master/games/asahotak.json')
+let result = anu[Math.floor(Math.random() * anu.length)]
+asahotak.push({id: sender, jawaban: result.jawaban})
+fs.writeFileSync('./database/game/asahotak.json', JSON.stringify(asahotak))
+ronzz.sendMessage(from, { text: `Silahkan jawab pertanyaan di bawah ini\n\nSoal : ${result.soal}\nWaktu : 60 Detik`, buttons: [{ buttonId: '.nyerah', buttonText: { displayText: 'Nyerah' }, type: 1 },{ buttonId: '.hint', buttonText: { displayText: 'Hint' }, type: 1 }], footer: footer}, { quoted: msg })
+console.log("Jawaban: " + result.jawaban)
+await sleep(60000)
+if (cekGame("id", sender, asahotak) !== null) {
+ronzz.sendMessage(from, { text: `Waktu habis\nJawaban : ${cekGame("jawaban", sender, asahotak)}`, buttons: [{ buttonId: '.asahotak', buttonText: { displayText: "Main Lagi" }, type: 1 }], footer: footer }, { quoted: msg })
+let delAsahO = {id: sender, jawaban: cekGame("jawaban", sender, asahotak)}
+asahotak.splice(delAsahO, 1)
+fs.writeFileSync('./database/game/asahotak.json', JSON.stringify(asahotak, null, 2))
+}
+}
+addCmd(command, 1, db_dashboard)
+break
+
+case 'caklontong':{
+if (cekUser("id", sender) == null) return sendMessRegis(from)
+if (cekGame("id", sender, caklontong) !== null) return reply("Kamu masih ada sesi yang belum di selesaikan.")
+let anu = await fetchJson('https://raw.githubusercontent.com/Ronzz-Ofc/database/master/games/caklontong.json')
+let result = anu[Math.floor(Math.random() * anu.length)]
+caklontong.push({id: sender, jawaban: result.jawaban, deskripsi: result.deskripsi})
+fs.writeFileSync('./database/game/caklontong.json', JSON.stringify(caklontong))
+ronzz.sendMessage(from, { text: `Silahkan jawab pertanyaan di bawah ini\n\nSoal : ${result.soal}\nWaktu : 60 Detik`, buttons: [{ buttonId: '.nyerah', buttonText: { displayText: 'Nyerah' }, type: 1 },{ buttonId: '.hint', buttonText: { displayText: 'Hint' }, type: 1 }], footer: footer}, { quoted: msg })
+console.log("Jawaban: " + result.jawaban)
+await sleep(60000)
+if (cekGame("id", sender, caklontong) !== null) {
+ronzz.sendMessage(from, { text: `Waktu habis\nJawaban : ${cekGame("jawaban", sender, caklontong)}\nDeskripsi : ${cekGame("deskripsi", sender, caklontong)}`, buttons: [{ buttonId: '.caklontong', buttonText: { displayText: "Main Lagi" }, type: 1 }], footer: footer }, { quoted: msg })
+let delCakL = {id: sender, jawaban: cekGame("jawaban", sender, caklontong)}
+caklontong.splice(delCakL, 1)
+fs.writeFileSync('./database/game/caklontong.json', JSON.stringify(caklontong, null, 2))
+}
+}
+addCmd(command, 1, db_dashboard)
+break
+
 case 'tebakgambar':{
 if (cekUser("id", sender) == null) return sendMessRegis(from)
 if (cekGame("id", sender, tebakgambar) !== null) return reply("Kamu masih ada sesi yang belum di selesaikan.")
-let anu = await fetchJson('https://raw.githubusercontent.com/BochilTeam/database/master/games/tebakgambar.json')
+let anu = await fetchJson('https://raw.githubusercontent.com/Ronzz-Ofc/database/master/games/tebakgambar.json')
 let result = anu[Math.floor(Math.random() * anu.length)]
 tebakgambar.push({id: sender, jawaban: result.jawaban})
 fs.writeFileSync('./database/game/tebakgambar.json', JSON.stringify(tebakgambar))
@@ -2647,7 +2717,7 @@ break
 case 'tebakkata':{
 if (cekUser("id", sender) == null) return sendMessRegis(from)
 if (cekGame("id", sender, tebakkata) !== null) return reply("Kamu masih ada sesi yang belum di selesaikan.")
-let anu = await fetchJson('https://raw.githubusercontent.com/BochilTeam/database/master/games/tebakkata.json')
+let anu = await fetchJson('https://raw.githubusercontent.com/Ronzz-Ofc/database/master/games/tebakkata.json')
 let result = anu[Math.floor(Math.random() * anu.length)]
 tebakkata.push({id: sender, jawaban: result.jawaban})
 fs.writeFileSync('./database/game/tebakkata.json', JSON.stringify(tebakkata))
@@ -2667,7 +2737,7 @@ break
 case 'tebakbendera':{
 if (cekUser("id", sender) == null) return sendMessRegis(from)
 if (cekGame("id", sender, tebakbendera) !== null) return reply("Kamu masih ada sesi yang belum di selesaikan.")
-let anu = await fetchJson('https://raw.githubusercontent.com/BochilTeam/database/master/games/tebakkata.json')
+let anu = await fetchJson('https://raw.githubusercontent.com/Ronzz-Ofc/database/master/games/tebakkata.json')
 let result = anu[Math.floor(Math.random() * anu.length)]
 tebakbendera.push({id: sender, jawaban: result.name})
 fs.writeFileSync('./database/game/tebakbendera.json', JSON.stringify(tebakbendera))
@@ -2687,7 +2757,7 @@ break
 case 'tebakkalimat':{
 if (cekUser("id", sender) == null) return sendMessRegis(from)
 if (cekGame("id", sender, tebakkalimat) !== null) return reply("Kamu masih ada sesi yang belum di selesaikan.")
-let anu = await fetchJson('https://raw.githubusercontent.com/BochilTeam/database/master/games/tebakkalimat.json')
+let anu = await fetchJson('https://raw.githubusercontent.com/Ronzz-Ofc/database/master/games/tebakkalimat.json')
 let result = anu[Math.floor(Math.random() * anu.length)]
 tebakkalimat.push({id: sender, jawaban: result.jawaban})
 fs.writeFileSync('./database/game/tebakkalimat.json', JSON.stringify(tebakkalimat))
@@ -2707,7 +2777,7 @@ break
 case 'siapakahaku':{
 if (cekUser("id", sender) == null) return sendMessRegis(from)
 if (cekGame("id", sender, siapakahaku) !== null) return reply("Kamu masih ada sesi yang belum di selesaikan.")
-let anu = await fetchJson('https://raw.githubusercontent.com/BochilTeam/database/master/games/siapakahaku.json')
+let anu = await fetchJson('https://raw.githubusercontent.com/Ronzz-Ofc/database/master/games/siapakahaku.json')
 let result = anu[Math.floor(Math.random() * anu.length)]
 siapakahaku.push({id: sender, jawaban: result.jawaban})
 fs.writeFileSync('./database/game/siapakahaku.json', JSON.stringify(siapakahaku))
@@ -2727,7 +2797,7 @@ break
 case 'tebakkimia':{
 if (cekUser("id", sender) == null) return sendMessRegis(from)
 if (cekGame("id", sender, tebakkimia) !== null) return reply("Kamu masih ada sesi yang belum di selesaikan.")
-let anu = await fetchJson('https://raw.githubusercontent.com/BochilTeam/database/master/games/tebakkimia.json')
+let anu = await fetchJson('https://raw.githubusercontent.com/Ronzz-Ofc/database/master/games/tebakkimia.json')
 let result = anu[Math.floor(Math.random() * anu.length)]
 tebakkimia.push({id: sender, jawaban: result.lambang})
 fs.writeFileSync('./database/game/tebakkimia.json', JSON.stringify(tebakkimia))
@@ -2747,7 +2817,7 @@ break
 case 'tebaklirik':{
 if (cekUser("id", sender) == null) return sendMessRegis(from)
 if (cekGame("id", sender, tebaklirik) !== null) return reply("Kamu masih ada sesi yang belum di selesaikan.")
-let anu = await fetchJson('https://raw.githubusercontent.com/BochilTeam/database/master/games/tebaklirik.json')
+let anu = await fetchJson('https://raw.githubusercontent.com/Ronzz-Ofc/database/master/games/tebaklirik.json')
 let result = anu[Math.floor(Math.random() * anu.length)]
 tebaklirik.push({id: sender, jawaban: result.jawaban})
 fs.writeFileSync('./database/game/tebaklirik.json', JSON.stringify(tebaklirik))
@@ -2767,7 +2837,7 @@ break
 case 'tebaktebakan':{
 if (cekUser("id", sender) == null) return sendMessRegis(from)
 if (cekGame("id", sender, tebaktebakan) !== null) return reply("Kamu masih ada sesi yang belum di selesaikan.")
-let anu = await fetchJson('https://raw.githubusercontent.com/BochilTeam/database/master/games/tebaktebakan.json')
+let anu = await fetchJson('https://raw.githubusercontent.com/Ronzz-Ofc/database/master/games/tebaktebakan.json')
 let result = anu[Math.floor(Math.random() * anu.length)]
 tebaktebakan.push({id: sender, jawaban: result.jawaban})
 fs.writeFileSync('./database/game/tebaktebakan.json', JSON.stringify(tebaktebakan))
@@ -2787,7 +2857,7 @@ break
 case 'susunkata':{
 if (cekUser("id", sender) == null) return sendMessRegis(from)
 if (cekGame("id", sender, susunkata) !== null) return reply("Kamu masih ada sesi yang belum di selesaikan.")
-let anu = await fetchJson('https://raw.githubusercontent.com/BochilTeam/database/master/games/susunkata.json')
+let anu = await fetchJson('https://raw.githubusercontent.com/Ronzz-Ofc/database/master/games/susunkata.json')
 let result = anu[Math.floor(Math.random() * anu.length)]
 susunkata.push({id: sender, jawaban: result.jawaban})
 fs.writeFileSync('./database/game/susunkata.json', JSON.stringify(susunkata))
@@ -2807,7 +2877,7 @@ break
 case 'tekateki':{
 if (cekUser("id", sender) == null) return sendMessRegis(from)
 if (cekGame("id", sender, tekateki) !== null) return reply("Kamu masih ada sesi yang belum di selesaikan.")
-let anu = await fetchJson('https://raw.githubusercontent.com/BochilTeam/database/master/games/tekateki.json')
+let anu = await fetchJson('https://raw.githubusercontent.com/Ronzz-Ofc/database/master/games/tekateki.json')
 let result = anu[Math.floor(Math.random() * anu.length)]
 tekateki.push({id: sender, jawaban: result.jawaban})
 fs.writeFileSync('./database/game/tekateki.json', JSON.stringify(tekateki))
@@ -2825,7 +2895,17 @@ addCmd(command, 1, db_dashboard)
 break
 
 case 'nyerah': case 'menyerah':{
-if (cekGame("id", sender, tebakgambar) !== null) {
+if (cekGame("id", sender, asahotak) !== null) {
+ronzz.sendMessage(from, { text: `Yahh ${command}😪\nJawaban : ${cekGame("jawaban", sender, asahotak)}`, buttons: [{ buttonId: '.asahotak', buttonText: { displayText: "Main Lagi" }, type: 1 }], footer: footer }, { quoted: msg })
+let delAsahO = {id: sender, jawaban: cekGame("jawaban", sender, asahotak)}
+asahotak.splice(delAsahO, 1)
+fs.writeFileSync('./database/game/asahotak.json', JSON.stringify(asahotak, null, 2))
+} else if (cekGame("id", sender, caklontong) !== null) {
+ronzz.sendMessage(from, { text: `Yahh ${command}😪\nJawaban : ${cekGame("jawaban", sender, caklontong)}`, buttons: [{ buttonId: '.caklontong', buttonText: { displayText: "Main Lagi" }, type: 1 }], footer: footer }, { quoted: msg })
+let delCakL = {id: sender, jawaban: cekGame("jawaban", sender, caklontong), deskripsi: cekGame("deskripsi", sender, caklontong)}
+caklontong.splice(delCakL, 1)
+fs.writeFileSync('./database/game/caklontong.json', JSON.stringify(caklontong, null, 2))
+} else if (cekGame("id", sender, tebakgambar) !== null) {
 ronzz.sendMessage(from, { text: `Yahh ${command}😪\nJawaban : ${cekGame("jawaban", sender, tebakgambar)}`, buttons: [{ buttonId: '.tebakgambar', buttonText: { displayText: "Main Lagi" }, type: 1 }], footer: footer }, { quoted: msg })
 let delTebakG = {id: sender, jawaban: cekGame("jawaban", sender, tebakgambar)}
 tebakgambar.splice(delTebakG, 1)
@@ -2881,7 +2961,15 @@ addCmd(command, 1, db_dashboard)
 break
 
 case 'hint':{
-if (cekGame("id", sender, tebakgambar) !== null) {
+if (cekGame("id", sender, asahotak) !== null) {
+let jwbn = cekGame("jawaban", sender, asahotak)
+let jwbny = jwbn.replace(/[AIUEOaiueo]/g, '_')
+reply(jwbny)
+} else if (cekGame("id", sender, caklontong) !== null) {
+let jwbn = cekGame("jawaban", sender, caklontong)
+let jwbny = jwbn.replace(/[AIUEOaiueo]/g, '_')
+reply(jwbny)
+} else if (cekGame("id", sender, tebakgambar) !== null) {
 let jwbn = cekGame("jawaban", sender, tebakgambar)
 let jwbny = jwbn.replace(/[AIUEOaiueo]/g, '_')
 reply(jwbny)
