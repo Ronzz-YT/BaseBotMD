@@ -289,11 +289,14 @@ return Math.floor(Math.random() * min) + 1
 
 //Anti Link
 if (isGroup && isAntiLink && isBotGroupAdmins){
-if (chats.match(/(https:\/\/chat.whatsapp.com)/gi)) {
+if (chats.includes("https://chat.whatsapp.com/"+ronzz.groupInviteCode(from))) {
+} else if (chats.match(/(https:\/\/chat.whatsapp.com)/gi)) {
 if (!isBotGroupAdmins) return reply('Untung bot bukan admin')
 if (isOwner) return reply('Untung lu owner ku:v')
 if (isGroupAdmins) return reply('Admin grup mah bebas ygy')
-reply(`*「 GROUP LINK DETECTOR 」*\n\nSepertinya kamu mengirimkan link grup, maaf kamu akan di kick`)
+await ronzz.sendMessage(from, { delete: msg.key })
+ronzz.sendMessage(from, { text: `*「 GROUP LINK DETECTOR 」*\n\nMaaf @${sender.split('@')[0]}, sepertinya kamu mengirimkan link grup, maaf kamu akan di kick`, mentions: [sender]})
+await sleep(500)
 ronzz.groupParticipantsUpdate(from, [sender], "remove")
 }
 }
@@ -944,7 +947,7 @@ let teks = `Hallo *${cekUser("id", sender) !== null ? cekUser("name", sender) : 
 Ini adalah *BASE BOT MD* buatan *Ronzz YT*
 
 *Link Script / Base Bot :*
-https://github.com/Ronzz-Ofc/BaseMD
+https://github.com/Ronzz-Ofc/BaseBotMD
 
 *Script no enc 100%*
 *Mudah untuk di recode*
@@ -2209,9 +2212,13 @@ break
 case 'delete':
 if (!isGroup) return reply(mess.group)
 if (!isGroupAdmins && !isOwner) return reply(mess.admin)
-if (!isQuotedMsg) return reply(`Reply chat dari bot yang ingin dihapus`)
-if (!quotedMsg.fromMe) return reply(`Hanya bisa menghapus chat dari bot`)
+if (!isQuotedMsg) return reply(`Reply chat yang ingin dihapus`)
+if (quotedMsg.fromMe) {
 ronzz.sendMessage(from, { delete: { fromMe: true, id: quotedMsg.id, remoteJid: from }})
+} else {
+if (!isBotGroupAdmins) return reply(mess.botAdmin)
+ronzz.sendMessage(from, { delete: quotedMsg.id })
+}
 addCmd(command, 1, db_dashboard)
 break
 
