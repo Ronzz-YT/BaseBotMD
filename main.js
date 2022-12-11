@@ -248,29 +248,7 @@ console.log(err)
 
         ronzz.ws.on('CB:call', async (json) => {
            const callerId = json.content[0].attrs['call-creator']
-           const idCall = json.content[0].attrs['call-id']
-           const Id = json.attrs.id
-           const T = json.attrs.t
-           ronzz.sendNode({
-  tag: 'call',
-    attrs: {
-      from: `${ownerNomer}@s.whatsapp.net`,
-      id: Id,
-      t: T
-    },
-    content: [
-      {
-        tag: 'reject',
-        attrs: {
-          'call-creator': callerId,
-          'call-id': idCall,
-          count: '0'
-        },
-        content: null
-      }
-    ]
-})
-if (json.content[0].tag == 'offer') {
+		   if (json.content[0].tag == 'offer') {
            ronzz.sendMessage(callerId, { text: `Kamu telah di blok oleh bot, karena kamu menelpon bot!!\n\nJika tidak sengaja silahkan hubungi owner agar dibuka blocknya!!\nNomor owner : https://wa.me/${ownerNomer}` })
            setTimeout(() => {
        	ronzz.updateBlockStatus(callerId, 'block')
