@@ -289,8 +289,10 @@ return Math.floor(Math.random() * min) + 1
 
 //Anti Link
 if (isGroup && isAntiLink && isBotGroupAdmins){
-if (chats.includes("https://chat.whatsapp.com/"+ronzz.groupInviteCode(from))) {
-} else if (chats.match(/(https:\/\/chat.whatsapp.com)/gi)) {
+let gcnya = await ronzz.groupInviteCode(from)
+if (chats.includes(`https://chat.whatsapp.com/${gcnya}`)) {
+reply(`*「 GROUP LINK DETECTOR 」*\n\nAnda tidak akan dikick oleh bot, karena yang anda kirim adalah link group ini`)
+} else if (chats.match(/(https:\/\/chat.whatsapp.com)/gi) && !chats.includes(`https://chat.whatsapp.com/${gcnya}`)) {
 if (!isBotGroupAdmins) return reply('Untung bot bukan admin')
 if (isOwner) return reply('Untung lu owner ku:v')
 if (isGroupAdmins) return reply('Admin grup mah bebas ygy')
@@ -347,6 +349,10 @@ quoted: msg
 //Auto read
 if (msg.message) {
 ronzz.readMessages([msg.key])
+}
+
+if (!ronzz.public) {
+if (!fromMe && !isOwner) return
 }
 
 // Function for Anti Spam
@@ -830,6 +836,7 @@ ${readmore}
 - ${prefix}bc
 - ${prefix}join
 - ${prefix}leave
+- ${prefix}mode
 - ${prefix}block
 - ${prefix}server
 - ${prefix}setexif
@@ -3276,6 +3283,19 @@ setTimeout( () => {
 ronzz.groupLeave(from)
 }, 700)
 addCmd(command, 1, db_dashboard)
+break
+
+case 'mode':
+if (!isOwner) return reply(mess.owner)
+if (!q) return ronzz.sendMessage(from, { text: 'Mode Bot', buttons: [{ buttonId: prefix+'mode public', buttonText: { displayText: 'Public' }, type: 1 },{ buttonId: prefix+'mode self', buttonText: { displayText: 'Self' }, type: 1 }], footer: 'Klik button di bawah untuk memilih mode bot' }, { quoted: msg })
+if (/public/.test(q)) {
+ronzz.public = true
+reply('Sukses mengganti mode bot ke mode public')
+}
+if (/self/.test(q)) {
+ronzz.public = false
+reply('Sukses mengganti mode bot ke mode self')
+}
 break
 
 case 'addprem':{
