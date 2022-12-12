@@ -2077,7 +2077,7 @@ var mems = []
 groupMembers.map( i => mems.push(i.id) )
 var number;
 if (args.length > 1) {
-number = q.replace(/[^0-9]/gi, '')+"@s.whatsapp.net"
+number = q+"@s.whatsapp.net"
 var cek = await ronzz.onWhatsApp(number)
 if (cek.length == 0) return reply(`Masukkan nomer yang valid dan terdaftar di WhatsApp`)
 if (mems.includes(number)) return reply(`Nomer tersebut sudah berada didalam grup!`)
