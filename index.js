@@ -274,9 +274,20 @@ fs.writeFileSync(path_file, buffer)
 return path_file}
 }
 
+function mentions(teks, mems = [], id) {
+if (id == null || id == undefined || id == false) {
+let res = ronzz.sendMessage(from, { text: teks, mentions: mems }, { quoted: msg })
+return res
+} else {
+let res = ronzz.sendMessage(from, { text: teks, mentions: mems }, { quoted: msg })
+return res
+}
+}
+
 const pickRandom = (arr) => {
 return arr[Math.floor(Math.random() * arr.length)]
 }
+
 function randomNomor(min, max = null) {
 if (max !== null) {
 min = Math.ceil(min);
