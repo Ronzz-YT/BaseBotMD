@@ -23,7 +23,7 @@ const logg = require('pino')
 const clui = require('clui')
 const PhoneNumber = require('awesome-phonenumber')
 const { Spinner } = clui
-const { imageToWebp, videoToWebp, writeExifImg, writeExifVid } = require('./function/uploader')
+const { imageToWebp, videoToWebp, writeExifImg, writeExifVid, TelegraPh } = require('./function/uploader')
 const { serialize, fetchJson, getBuffer, makeid, reSize } = require("./function/myfunc");
 const { color, mylog, infolog } = require("./function/console");
 const time = moment(new Date()).format('HH:mm:ss DD/MM/YYYY');
@@ -41,7 +41,7 @@ function title() {
          width: 80,
          whitespaceBreak: false
       })))
-console.log(chalk.yellow(`${chalk.red('[ Made By RonzzYT ]')}\n\n${chalk.italic.magenta('• Author')} : ${chalk.white('RonzzOfc')}\n${chalk.italic.magenta('• YouTube')} : ${chalk.white('Ronzz YT')}\n${chalk.italic.magenta('• Caption')} : ${chalk.white('Terus Berkarya Hingga Suatu Saat Menjadi Orang Kaya')}\n${chalk.italic.magenta('• Donate')} : ${chalk.white('https://saweria.co/RonzzYT')}\n`))
+console.log(chalk.yellow(`${chalk.red('[ Made By RonzzYT ]')}\n\n${chalk.italic.magenta('â€¢ Author')} : ${chalk.white('RonzzOfc')}\n${chalk.italic.magenta('â€¢ YouTube')} : ${chalk.white('Ronzz YT')}\n${chalk.italic.magenta('â€¢ Caption')} : ${chalk.white('Terus Berkarya Hingga Suatu Saat Menjadi Orang Kaya')}\n${chalk.italic.magenta('â€¢ Donate')} : ${chalk.white('https://saweria.co/RonzzYT')}\n`))
 }
 
 /**
@@ -109,6 +109,8 @@ const connectToWhatsApp = async () => {
         
         ronzz.spam = []
         
+        ronzz.public = true
+        
         ronzz.ev.on('messages.upsert', async m => {
            var msg = m.messages[0]
            if (!m.messages) return;
@@ -126,11 +128,29 @@ const connectToWhatsApp = async () => {
               reconnect.stop()
               starting.stop()
               console.log(mylog('Server Ready'))
-              lastDisconnect.error?.output?.statusCode !== DisconnectReason.loggedOut 
+              lastDisconnect.error.output.statusCode !== DisconnectReason.loggedOut 
               ? connectToWhatsApp() 
               : console.log(mylog('Wa web terlogout...'))
            }
         })
+
+        ronzz.getName = (jid, withoutContact = false) => {
+           var id = ronzz.decodeJid(jid)
+           withoutContact = ronzz.withoutContact || withoutContact
+           let v
+           if (id.endsWith("@g.us")) return new Promise(async (resolve) => {
+             v = store.contacts[id] || {}
+             if (!(v.name || v.subject)) v = ronzz.groupMetadata(id) || {}
+             resolve(v.name || v.subject || PhoneNumber('+' + id.replace('@s.whatsapp.net', '')).getNumber('international'))
+           })
+            else v = id === '0@s.whatsapp.net' ? {
+             id,
+             name: 'WhatsApp'
+            } : id === ronzz.decodeJid(ronzz.user.id) ?
+             ronzz.user :
+             (store.contacts[id] || {})
+             return (withoutContact ? '' : v.name) || v.subject || v.verifiedName || PhoneNumber('+' + jid.replace('@s.whatsapp.net', '')).getNumber('international')
+        }
 
         ronzz.ev.on('group-participants.update', async (update) =>{
            const isWelcome = welcome
@@ -152,7 +172,7 @@ let metadata = await ronzz.groupMetadata(update.id)
 let participants = update.participants
 for (let num of participants) {
 if (update.action == 'demote') {
-var button = [{ buttonId: '!text_grup', buttonText: { displayText: 'Selamat🎉'}, type: 1 }]
+var button = [{ buttonId: '!text_grup', buttonText: { displayText: 'Kasian😆'}, type: 1 }]
 await ronzz.sendMessage(
 update.id, 
 { 
@@ -177,12 +197,19 @@ var ppuser = await ronzz.profilePictureUrl(num, 'image')
 } catch {
 var ppuser = 'https://telegra.ph/file/265c672094dfa87caea19.jpg'
 }
-const bio = (await ronzz.fetchStatus(num).catch(console.error) || {}).status || 'Tidak ada bio, mungkin kamu private🙏'
+var stream = await getBuffer(ppuser) 
+let buffer = Buffer.from([])
+buffer = Buffer.concat([buffer, stream])
+fs.writeFileSync('./options/sticker/welcome.jpg', buffer)
+let ppnya = await TelegraPh('./options/sticker/welcome.jpg')
+let namenya = await ronzz.getName(num)
+let welcomenya = `https://api.popcat.xyz/welcomecard?background=https://cdn.discordapp.com/attachments/850808002545319957/859359637106065408/bg.png&text1=${namenya}&text2=Welcome+To+${metadata.subject}&text3=Member+${metadata.participants.length ? metadata.participants.length : "Undefined"}&avatar=${ppnya}`
+const bio = (await ronzz.fetchStatus(num).catch(console.error) || {}).status || 'Tidak ada bio, mungkin kamu privateðŸ™'
 var button = [{ buttonId: '!text_grup', buttonText: { displayText: 'Welcome👋'}, type: 1 }]
 await ronzz.sendMessage(
 update.id, 
 { 
-image: { url: ppuser },
+image: { url: welcomenya },
 caption: `*Welcome To ${metadata.subject}*
 
 📛 : _@${num.split("@")[0]}_
@@ -193,7 +220,7 @@ caption: `*Welcome To ${metadata.subject}*
 ⏰ : _${jamwib} *WIB*_
 
 📄 *Deskripsi :*
-${metadata.desc ? metadata.desc : 'Tidak ada deskripsi🙏'}`,
+${metadata.desc ? metadata.desc : 'Tidak ada deskripsi'}`,
 buttons: button, 
 footer: footer,
 mentions: [num] })
@@ -204,12 +231,19 @@ var ppuser = await ronzz.profilePictureUrl(num, 'image')
 } catch {
 var ppuser = 'https://telegra.ph/file/265c672094dfa87caea19.jpg'
 }
-const bio = (await ronzz.fetchStatus(num).catch(console.error) || {}).status || 'Tidak ada bio, mungkin kamu private🙏'
+var stream = await getBuffer(ppuser) 
+let buffer = Buffer.from([])
+buffer = Buffer.concat([buffer, stream])
+fs.writeFileSync('./options/sticker/left.jpg', buffer)
+let ppnya = await TelegraPh('./options/sticker/left.jpg')
+let namenya = await ronzz.getName(num)
+let leftnya = `https://api.popcat.xyz/welcomecard?background=https://cdn.discordapp.com/attachments/850808002545319957/859359637106065408/bg.png&text1=${namenya}&text2=Leave+From+${metadata.subject}&text3=Member+${metadata.participants.length ? metadata.participants.length : "Undefined"}&avatar=${ppnya}`
+const bio = (await ronzz.fetchStatus(num).catch(console.error) || {}).status || 'Tidak ada bio, mungkin kamu privateðŸ™'
 var button = [{ buttonId: '!text_grup', buttonText: { displayText: 'GoodBye👋'}, type: 1 }]
 await ronzz.sendMessage(
 update.id, 
 {
-image: { url: ppuser },
+image: { url: leftnya },
 caption: `*Leave From Grup ${metadata.subject}*
 
 📛 : _@${num.split("@")[0]}_
@@ -270,24 +304,6 @@ console.log(err)
              if (store && store.contacts) store.contacts[id] = { id, name: contact.notify }
            }
         })
-
-        ronzz.getName = (jid, withoutContact = false) => {
-           var id = ronzz.decodeJid(jid)
-           withoutContact = ronzz.withoutContact || withoutContact
-           let v
-           if (id.endsWith("@g.us")) return new Promise(async (resolve) => {
-             v = store.contacts[id] || {}
-             if (!(v.name || v.subject)) v = ronzz.groupMetadata(id) || {}
-             resolve(v.name || v.subject || PhoneNumber('+' + id.replace('@s.whatsapp.net', '')).getNumber('international'))
-           })
-            else v = id === '0@s.whatsapp.net' ? {
-             id,
-             name: 'WhatsApp'
-            } : id === ronzz.decodeJid(ronzz.user.id) ?
-             ronzz.user :
-             (store.contacts[id] || {})
-             return (withoutContact ? '' : v.name) || v.subject || v.verifiedName || PhoneNumber('+' + jid.replace('@s.whatsapp.net', '')).getNumber('international')
-        }
 
         ronzz.setStatus = (status) => {
            ronzz.query({
@@ -368,7 +384,7 @@ console.log(err)
 
         ronzz.downloadAndSaveMediaMessage = async(msg, type_file, path_file) => {
            if (type_file === 'image') {
-             var stream = await downloadContentFromMessage(msg.message.imageMessage || msg.message.extendedTextMessage?.contextInfo.quotedMessage.imageMessage, 'image')
+             var stream = await downloadContentFromMessage(msg.message.imageMessage || msg.message.extendedTextMessage.contextInfo.quotedMessage.imageMessage, 'image')
              let buffer = Buffer.from([])
              for await(const chunk of stream) {
                buffer = Buffer.concat([buffer, chunk])
@@ -376,7 +392,7 @@ console.log(err)
              fs.writeFileSync(path_file, buffer)
              return path_file
            } else if (type_file === 'video') {
-             var stream = await downloadContentFromMessage(msg.message.videoMessage || msg.message.extendedTextMessage?.contextInfo.quotedMessage.videoMessage, 'video')
+             var stream = await downloadContentFromMessage(msg.message.videoMessage || msg.message.extendedTextMessage.contextInfo.quotedMessage.videoMessage, 'video')
              let buffer = Buffer.from([])
              for await(const chunk of stream) {
                buffer = Buffer.concat([buffer, chunk])
@@ -384,7 +400,7 @@ console.log(err)
              fs.writeFileSync(path_file, buffer)
              return path_file
            } else if (type_file === 'sticker') {
-             var stream = await downloadContentFromMessage(msg.message.stickerMessage || msg.message.extendedTextMessage?.contextInfo.quotedMessage.stickerMessage, 'sticker')
+             var stream = await downloadContentFromMessage(msg.message.stickerMessage || msg.message.extendedTextMessage.contextInfo.quotedMessage.stickerMessage, 'sticker')
              let buffer = Buffer.from([])
              for await(const chunk of stream) {
                buffer = Buffer.concat([buffer, chunk])
@@ -392,7 +408,7 @@ console.log(err)
              fs.writeFileSync(path_file, buffer)
              return path_file
            } else if (type_file === 'audio') {
-             var stream = await downloadContentFromMessage(msg.message.audioMessage || msg.message.extendedTextMessage?.contextInfo.quotedMessage.audioMessage, 'audio')
+             var stream = await downloadContentFromMessage(msg.message.audioMessage || msg.message.extendedTextMessage.contextInfo.quotedMessage.audioMessage, 'audio')
              let buffer = Buffer.from([])
              for await(const chunk of stream) {
                buffer = Buffer.concat([buffer, chunk])
