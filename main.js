@@ -256,6 +256,17 @@ console.log(err)
            return await ronzz.sendMessage(jid, { image: buffer, caption: caption, ...options }, { quoted })
         }
         
+        ronzz.sendButton = async (jid, text, buttons = [], footer, quoted = '', options = {}) => {
+            let buttonMessage = {
+            text,
+            footer,
+            buttons,
+            headerType: 2,
+            ...options
+            }
+            return ronzz.sendMessage(jid, buttonMessage, { quoted, ...options })
+        }
+        
         ronzz.ev.on('group-update', async (anu) => {
            updateGroup(ronzz, anu, MessageType)
         })
