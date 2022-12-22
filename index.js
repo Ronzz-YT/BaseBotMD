@@ -120,8 +120,7 @@ if (msg.isBaileys) return
 const jamwib = moment.tz('asia/jakarta').format('HH:mm:ss')
 const jamwita = moment.tz('asia/makassar').format('HH:mm:ss')
 const jamwit = moment.tz('asia/jayapura').format('HH:mm:ss')
-const dt = moment(Date.now()).tz('Asia/Jakarta').locale('id').format('a')
-const ucapanWaktu = "Selamat "+dt.charAt(0).toUpperCase() + dt.slice(1)
+const dt = moment.tz('Asia/Jakarta').format('HH')
 const content = JSON.stringify(msg.message)
 const from = msg.key.remoteJid
 const chats = (type === 'conversation' && msg.message.conversation) ? msg.message.conversation : (type === 'imageMessage') && msg.message.imageMessage.caption ? msg.message.imageMessage.caption : (type === 'videoMessage') && msg.message.videoMessage.caption ? msg.message.videoMessage.caption : (type === 'extendedTextMessage') && msg.message.extendedTextMessage.text ? msg.message.extendedTextMessage.text : (type === 'buttonsResponseMessage') && quotedMsg.fromMe && msg.message.buttonsResponseMessage.selectedButtonId ? msg.message.buttonsResponseMessage.selectedButtonId : (type === 'templateButtonReplyMessage') && quotedMsg.fromMe && msg.message.templateButtonReplyMessage.selectedId ? msg.message.templateButtonReplyMessage.selectedId : (type === 'messageContextInfo') ? (msg.message.buttonsResponseMessage?.selectedButtonId || msg.message.listResponseMessage?.singleSelectReply.selectedRowId) : (type == 'listResponseMessage') && quotedMsg.fromMe && msg.message.listResponseMessage.singleSelectReply.selectedRowId ? msg.message.listResponseMessage.singleSelectReply.selectedRowId : ""
@@ -273,6 +272,23 @@ buffer = Buffer.concat([buffer, chunk])}
 fs.writeFileSync(path_file, buffer)
 return path_file}
 }
+
+//Ucapan waktu
+  if (dt >= 0) {
+    var ucapanWaktu = ('Selamat Malam🌃')
+  }
+  if (dt >= 4) {
+    var ucapanWaktu = ('Selamat Pagi🌄')
+  }
+  if (dt >= 12) {
+    var ucapanWaktu = ('Selamat Siang☀️')
+  }
+  if (dt >= 16) {
+    var ucapanWaktu = ('️ Selamat Sore🌇')
+  }
+  if (dt >= 23) {
+    var ucapanWaktu = ('Selamat Malam🌙')
+  }
 
 function mentions(teks, mems = [], id) {
 if (id == null || id == undefined || id == false) {
@@ -630,251 +646,296 @@ let more = String.fromCharCode(8206)
 let readmore = more.repeat(4001)
 let bio = (await ronzz.fetchStatus(sender).catch(console.error) || {}).status || '-'
 let listblock = await ronzz.fetchBlocklist()
-let teks = `Hallo *${cekUser("id", sender) !== null ? cekUser("name", sender) : `${pushname}`}* ${ucapanWaktu} 👋
-
-*USER INFO*
-- ID : @${sender.split('@')[0]}
-- Register : ${cekUser("id", sender) !== null ? `✓
-- Premium : ${cekUser("premium", sender) == true? '✓' : '✘'}
-- Name : ${cekUser("name", sender)}
-- Resi : ${cekUser("resi", sender)}
-- Register On : ${cekUser("registerOn", sender)}` : `✘
-- Premium : ✘
-- Name : ${pushname}`}
-- Bio : ${bio ? bio : '-'}
-- Status : ${isOwner ? 'Owner' : 'User'} ${botName}
-
-*BOT INFO*
-- Library : Baileys-MD
-- Bot Name : ${botName}
-- Owner : @${ownerNomer}
-- Prefix : [ MULTI PREFIX ]
-- Runtime : ${runtime(process.uptime())}
-- User : ${user.length} User
-- User Terblockir : ${listblock ? listblock.length : '0'} User
-
-*DATE INFO*
-- Masehi : ${tanggal}
-- Hijriah : ${dateIslamic}
-
-*TIME INFO*
-- WIB : ${jamwib}
-- WITA : ${jamwita}
-- WIT : ${jamwit}
+let teks = `╭━━━━━━━━━━━━━━━┅•ิ.•ஐ
+│ *${ucapanWaktu} @${sender.split('@')[0]}⁩*
+└┬────────────┾•ิ.•┽
+┌┤      *[ BOT INFO 🤖 ]*
+││
+││◯ *Library :* Baileys-MD
+││◯ *Bot Name :* ${botName}
+││◯ *Owner :* @${ownerNomer}
+││◯ *User :* ${user.length}
+││◯ *Runtime :* ${runtime(process.uptime())}
+││
+│└────────────┾•ิ.•┽
+│    *[ USER INFO 👤 ]*
+│
+│◯ *ID :* @${sender.split('@')[0]}
+│◯ *Register :* ${cekUser("id", sender) !== null ? `✓
+│◯ *Premium :* ${cekUser("premium", sender) == true? '✓' : '✘'}
+│◯ *Name :* ${cekUser("name", sender)}
+│◯ *Resi :* ${cekUser("resi", sender)}
+│◯ *Register On :* ${cekUser("registerOn", sender)}` : `✘
+│◯ *Premium :* ✘
+│◯ *Name :* ${pushname}`}
+│◯ *Bio :* ${bio ? bio : '-'}
+│◯ *Status :* ${isOwner ? 'Owner' : 'User'} ${botName}
+│
+├──────────────┾•ิ.•┽
+│    *[ DATE INFO 📆 ]*
+│
+│◯ *Masehi :* ${tanggal}
+│◯ *Hijriah :* ${dateIslamic}
+│
+├──────────────┾•ิ.•┽
+│    *[ TIME INFO ⏰ ]*
+│
+│◯ *WIB :* ${jamwib}
+│◯ *WITA :* ${jamwita}
+│◯ *WIT :* ${jamwit}
+│
+╰━━━━━━━━━━━━━━━━┅•ิ.•ஐ
 ${readmore}
-*MAIN MENU*
-- ${prefix}simi
-- ${prefix}chat
-- ${prefix}confess
-- ${prefix}menfess
-- ${prefix}request
-- ${prefix}report
-
-*OTHERS MENU*
-- ${prefix}owner
-- ${prefix}donasi
-- ${prefix}ping
-- ${prefix}rules
-- ${prefix}script
-- ${prefix}profile
-- ${prefix}gcbot
-- ${prefix}buyprem
-- ${prefix}sourcecode
-
-*PREMIUM MENU*
-- ${prefix}jadibot
-- ${prefix}listjadibot
-- ${prefix}spamcall
-- ${prefix}spamsms1
-- ${prefix}spamsms2
-- ${prefix}spamsms3
-- ${prefix}spamsms4
-- ${prefix}spamsms5
-- ${prefix}spamsms6
-- ${prefix}spamsms7
-- ${prefix}spamsms8
-
-*TOOLS MENU*
-- ${prefix}tourl
-- ${prefix}ttp
-- ${prefix}attp
-- ${prefix}nulis
-- ${prefix}ssweb
-- ${prefix}toimg
-- ${prefix}tomp3
-- ${prefix}tovn
-- ${prefix}obfus
-- ${prefix}sticker
-- ${prefix}tts
-- ${prefix}emojimix
-- ${prefix}translateid
-- ${prefix}translateen
-- ${prefix}tinyurl
-- ${prefix}cuttly
-- ${prefix}bitly
-- ${prefix}bass
-- ${prefix}blown
-- ${prefix}deep
-- ${prefix}earrape
-- ${prefix}fast
-- ${prefix}fat
-- ${prefix}nightcore
-- ${prefix}reverse
-- ${prefix}robot
-- ${prefix}slow
-- ${prefix}tupai
-
-*SOSMED MENU*
-- ${prefix}order
-- ${prefix}like
-- ${prefix}view
-- ${prefix}followers
-- ${prefix}pricelist
-- ${prefix}cekstatus
-- ${prefix}confirmorderkunci
-
-*LESSON MENU*
-- ${prefix}addjudul
-- ${prefix}addtugas
-- ${prefix}deltugas
-- ${prefix}listtugas
-- ${prefix}resettugas
-
-*RANDOM MENU*
-- ${prefix}ppcouple
-- ${prefix}linkanime
-- ${prefix}quotesanime
-- ${prefix}servermc
-
-*ISLAMIC MENU*
-- ${prefix}jadwalsholat
-- ${prefix}ayatkursi
-- ${prefix}asmaulhusna
-- ${prefix}tafsirsurah
-- ${prefix}randomimage
-
-*SET PROSES/DONE*
-- ${prefix}setdone
-- ${prefix}delsetdone
-- ${prefix}changedone
-- ${prefix}setproses
-- ${prefix}delsetproses
-- ${prefix}changeproses
-
-*STORE MENU*
-- ${prefix}kali
-- ${prefix}bagi
-- ${prefix}kurang
-- ${prefix}tambah
-- ${prefix}done
-- ${prefix}proses
-- ${prefix}cekitem
-- ${prefix}additem
-- ${prefix}delitem
-- ${prefix}setitem
-
-*GROUP MENU*
-- ${prefix}add
-- ${prefix}kick
-- ${prefix}kicktimer
-- ${prefix}open
-- ${prefix}close
-- ${prefix}group
-- ${prefix}tagall
-- ${prefix}fitnah
-- ${prefix}delete
-- ${prefix}jodoh
-- ${prefix}jadian
-- ${prefix}revoke
-- ${prefix}antilink
-- ${prefix}welcome
-- ${prefix}left
-- ${prefix}hidetag
-- ${prefix}demote
-- ${prefix}setdesc
-- ${prefix}linkgc
-- ${prefix}promote
-- ${prefix}setppgrup
-- ${prefix}setnamegc
-- ${prefix}fakehidetag
-
-*DOWNLOADER MENU*
-- ${prefix}tiktokmp4
-- ${prefix}tiktokmp3
-- ${prefix}ytmp3
-- ${prefix}ytmp4
-- ${prefix}mediafire
-
-*INFO MENU*
-- ${prefix}cuaca
-
-*SEARCH MENU*
-- ${prefix}pinterest
-- ${prefix}wallpaper
-- ${prefix}play
-- ${prefix}happymod
-- ${prefix}mcpedl
-- ${prefix}komikku
-
-*GAME MENU*
-- ${prefix}asahotak
-- ${prefix}caklontong
-- ${prefix}tebakgambar
-- ${prefix}tebakkata
-- ${prefix}tebakbendera
-- ${prefix}tebakkalimat
-- ${prefix}siapakahaku
-- ${prefix}tebakkimia
-- ${prefix}tebaklirik
-- ${prefix}tebaktebakan
-- ${prefix}susunkata
-- ${prefix}tekateki
-
-*ANONYMOUS CHAT*
-- ${prefix}start
-- ${prefix}stop
-- ${prefix}skip
-- ${prefix}sendprofil
-- ${prefix}anonymous
-
-*STALKER MENU*
-- ${prefix}stalkff
-- ${prefix}stalkml
-- ${prefix}stalknpm
-- ${prefix}stalkgithub
-
-*OWNER MENU*
-- ${prefix}bc
-- ${prefix}join
-- ${prefix}leave
-- ${prefix}mode
-- ${prefix}block
-- ${prefix}server
-- ${prefix}setexif
-- ${prefix}resetdb
-- ${prefix}error
-- ${prefix}unblock
-- ${prefix}creategc
-- ${prefix}sendsesi
-- ${prefix}setppbot
-- ${prefix}setbiobot
-- ${prefix}broadcast
-- ${prefix}cekip
-
-*BUG MENU*
-- ${prefix}bug1
-- ${prefix}bug2
-- ${prefix}bug3
-- ${prefix}bug4
-- ${prefix}bug5
-- ${prefix}bug6
-- ${prefix}buggc`
+╭━━━━━━━━━━━━━━━┅•ิ.•ஐ
+│      *FITUR BOT*
+├──────────────┾•ิ.•┽
+│    *[ MAIN MENU ]*
+│
+│◯ ${prefix}simi
+│◯ ${prefix}chat
+│◯ ${prefix}confess
+│◯ ${prefix}menfess
+│◯ ${prefix}request
+│◯ ${prefix}report
+│
+├──────────────┾•ิ.•┽
+│    *[ OTHERS MENU ]*
+│
+│◯ ${prefix}owner
+│◯ ${prefix}donasi
+│◯ ${prefix}ping
+│◯ ${prefix}rules
+│◯ ${prefix}script
+│◯ ${prefix}profile
+│◯ ${prefix}gcbot
+│◯ ${prefix}sourcecode
+│
+├──────────────┾•ิ.•┽
+│    *[ PREMIUM MENU ]*
+│
+│◯ ${prefix}jadibot
+│◯ ${prefix}listjadibot
+│◯ ${prefix}spamcall
+│◯ ${prefix}spamsms1
+│◯ ${prefix}spamsms2
+│◯ ${prefix}spamsms3
+│◯ ${prefix}spamsms4
+│◯ ${prefix}spamsms5
+│◯ ${prefix}spamsms6
+│◯ ${prefix}spamsms7
+│◯ ${prefix}spamsms8
+│
+├──────────────┾•ิ.•┽
+│    *[ TOOLS MENU ]*
+│
+│◯ ${prefix}tourl
+│◯ ${prefix}ttp
+│◯ ${prefix}attp
+│◯ ${prefix}nulis
+│◯ ${prefix}ssweb
+│◯ ${prefix}toimg
+│◯ ${prefix}tomp3
+│◯ ${prefix}tovn
+│◯ ${prefix}obfus
+│◯ ${prefix}sticker
+│◯ ${prefix}tts
+│◯ ${prefix}emojimix
+│◯ ${prefix}translateid
+│◯ ${prefix}translateen
+│◯ ${prefix}tinyurl
+│◯ ${prefix}cuttly
+│◯ ${prefix}bitly
+│◯ ${prefix}bass
+│◯ ${prefix}blown
+│◯ ${prefix}deep
+│◯ ${prefix}earrape
+│◯ ${prefix}fast
+│◯ ${prefix}fat
+│◯ ${prefix}nightcore
+│◯ ${prefix}reverse
+│◯ ${prefix}robot
+│◯ ${prefix}slow
+│◯ ${prefix}tupai
+│
+├──────────────┾•ิ.•┽
+│    *[ SOSMED MENU ]*
+│
+│◯ ${prefix}order
+│◯ ${prefix}like
+│◯ ${prefix}view
+│◯ ${prefix}followers
+│◯ ${prefix}pricelist
+│◯ ${prefix}cekstatus
+│◯ ${prefix}confirmorderkunci
+│
+├──────────────┾•ิ.•┽
+│    *[ LESSON MENU ]*
+│
+│◯ ${prefix}addjudul
+│◯ ${prefix}addtugas
+│◯ ${prefix}deltugas
+│◯ ${prefix}listtugas
+│◯ ${prefix}resettugas
+│
+├──────────────┾•ิ.•┽
+│    *[ RANDOM MENU ]*
+│
+│◯ ${prefix}ppcouple
+│◯ ${prefix}linkanime
+│◯ ${prefix}quotesanime
+│◯ ${prefix}servermc
+│
+├──────────────┾•ิ.•┽
+│    *[ ISLAMIC MENU ]*
+│
+│◯ ${prefix}jadwalsholat
+│◯ ${prefix}ayatkursi
+│◯ ${prefix}asmaulhusna
+│◯ ${prefix}tafsirsurah
+│◯ ${prefix}randomimage
+│
+├──────────────┾•ิ.•┽
+│    *[ SET PROSES/DONE ]*
+│
+│◯ ${prefix}setdone
+│◯ ${prefix}delsetdone
+│◯ ${prefix}changedone
+│◯ ${prefix}setproses
+│◯ ${prefix}delsetproses
+│◯ ${prefix}changeproses
+│
+├──────────────┾•ิ.•┽
+│    *[ STORE MENU ]*
+│
+│◯ ${prefix}kali
+│◯ ${prefix}bagi
+│◯ ${prefix}kurang
+│◯ ${prefix}tambah
+│◯ ${prefix}done
+│◯ ${prefix}proses
+│◯ ${prefix}cekitem
+│◯ ${prefix}additem
+│◯ ${prefix}delitem
+│◯ ${prefix}setitem
+│
+├──────────────┾•ิ.•┽
+│    *[ GROUP MENU ]*
+│
+│◯ ${prefix}add
+│◯ ${prefix}kick
+│◯ ${prefix}kicktimer
+│◯ ${prefix}open
+│◯ ${prefix}close
+│◯ ${prefix}group
+│◯ ${prefix}tagall
+│◯ ${prefix}fitnah
+│◯ ${prefix}delete
+│◯ ${prefix}jodoh
+│◯ ${prefix}jadian
+│◯ ${prefix}revoke
+│◯ ${prefix}antilink
+│◯ ${prefix}welcome
+│◯ ${prefix}left
+│◯ ${prefix}hidetag
+│◯ ${prefix}demote
+│◯ ${prefix}setdesc
+│◯ ${prefix}linkgc
+│◯ ${prefix}promote
+│◯ ${prefix}setppgrup
+│◯ ${prefix}setnamegc
+│◯ ${prefix}fakehidetag
+│
+├──────────────┾•ิ.•┽
+│    *[ DOWNLOADER MENU ]*
+│
+│◯ ${prefix}tiktokmp4
+│◯ ${prefix}tiktokmp3
+│◯ ${prefix}ytmp3
+│◯ ${prefix}ytmp4
+│◯ ${prefix}mediafire
+│
+├──────────────┾•ิ.•┽
+│    *[ SEARCH MENU ]*
+│
+│◯ ${prefix}pinterest
+│◯ ${prefix}wallpaper
+│◯ ${prefix}play
+│◯ ${prefix}happymod
+│◯ ${prefix}mcpedl
+│◯ ${prefix}komikku
+│◯ ${prefix}cuaca
+│
+├──────────────┾•ิ.•┽
+│    *[ GAME MENU ]*
+│
+│◯ ${prefix}asahotak
+│◯ ${prefix}caklontong
+│◯ ${prefix}tebakgambar
+│◯ ${prefix}tebakkata
+│◯ ${prefix}tebakbendera
+│◯ ${prefix}tebakkalimat
+│◯ ${prefix}siapakahaku
+│◯ ${prefix}tebakkimia
+│◯ ${prefix}tebaklirik
+│◯ ${prefix}tebaktebakan
+│◯ ${prefix}susunkata
+│◯ ${prefix}tekateki
+│
+├──────────────┾•ิ.•┽
+│    *[ ANONYMOUS CHAT ]*
+│
+│◯ ${prefix}start
+│◯ ${prefix}stop
+│◯ ${prefix}skip
+│◯ ${prefix}sendprofil
+│◯ ${prefix}anonymous
+│
+├──────────────┾•ิ.•┽
+│    *[ STALKER MENU ]*
+│
+│◯ ${prefix}stalkff
+│◯ ${prefix}stalkml
+│◯ ${prefix}stalknpm
+│◯ ${prefix}stalkgithub
+│
+├──────────────┾•ิ.•┽
+│    *[ OWNER MENU ]*
+│
+│◯ ${prefix}bc
+│◯ ${prefix}join
+│◯ ${prefix}leave
+│◯ ${prefix}mode
+│◯ ${prefix}block
+│◯ ${prefix}server
+│◯ ${prefix}setexif
+│◯ ${prefix}resetdb
+│◯ ${prefix}error
+│◯ ${prefix}unblock
+│◯ ${prefix}creategc
+│◯ ${prefix}sendsesi
+│◯ ${prefix}setppbot
+│◯ ${prefix}setbiobot
+│◯ ${prefix}broadcast
+│◯ ${prefix}cekip
+│
+├──────────────┾•ิ.•┽
+│    *[ BUG MENU ]*
+│
+│◯ ${prefix}bug1
+│◯ ${prefix}bug2
+│◯ ${prefix}bug3
+│◯ ${prefix}bug4
+│◯ ${prefix}bug5
+│◯ ${prefix}bug6
+│◯ ${prefix}buggc
+│
+╰━━━━━━━━━━━━━━━━┅•ิ.•ஐ`
 let button = [
 { buttonId: `${prefix}owner`, buttonText: { displayText: '🙍‍♂️ Owner' }, type: 1 },
 { buttonId: `${prefix}donasi`, buttonText: { displayText: '💰 Donate' }, type: 1 },
 { buttonId: `${prefix}sourcecode`, buttonText: { displayText: '👨‍💻 Countributor' }, type: 1 }
 ]
-ronzz.sendMessage(from, { location: { jpegThumbnail: await reSize(fs.readFileSync(thumbnail), 300, 150) }, caption: teks, buttons: button, footer: `${botName} © 2022`, mentions: [sender,ownerNomer+'@s.whatsapp.net']}, { quoted: fkontak })
+ronzz.sendMessage(from, { caption: teks, buttons: button, footer: footer, mentions: [sender,ownerNomer+"@s.whatsapp.net"], 'document': {'url':'https://github.com/Ronzz-Ofc/BaseBotMD'},'mimetype':'application/vnd.openxmlformats-officedocument.wordprocessingml.document','fileName':footer,'fileLength':'99999999999999','pageCount':'999','previewType':'docx', contextInfo: { externalAdReply: { showAdAttribution: true, sourceUrl: 'https://youtu.be/ZJRuLQjkPmw', mediaType: 2, description: footer, title: `${ucapanWaktu} ${pushname}`, body: `Subscribe Ronzz YT`, previewType: 0, thumbnail: fs.readFileSync(thumbnail), mediaUrl: 'https://youtu.be/ZJRuLQjkPmw'}}}, { quoted: msg })
 }
 addCmd(command, 1, db_dashboard)
 break
@@ -2249,7 +2310,7 @@ let ments = [me, jodoh]
 let buttons = [
 { buttonId: prefix+'jodohku', buttonText: { displayText: 'Cari Lagi' }, type: 1 }
 ]
-await sendButtonText(from, buttons, jawab, footer, msg, {mentions: ments})
+await ronzz.sendButton(from, jawab, buttons, footer, msg, {mentions: ments})
 }
 addCmd(command, 1, db_dashboard)
 break
@@ -2267,7 +2328,7 @@ let menst = [orang, jodoh]
 let buttons = [
 { buttonId: prefix+'jadian', buttonText: { displayText: 'Cari Lagi' }, type: 1 }
 ]
-await sendButtonText(from, buttons, jawab, footer, msg, {mentions: menst})
+await ronzz.sendButton(from, jawab, buttons, footer, msg, {mentions: menst})
 }
 addCmd(command, 1, db_dashboard)
 break
