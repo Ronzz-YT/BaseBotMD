@@ -2681,8 +2681,8 @@ let yts = require("yt-search")
 let search = await yts(q)
 let anu = search.videos[Math.floor(Math.random() * search.videos.length)]
 let button_play = [
-{ buttonId: `${prefix}ytmp3 ${anu.url}`, buttonText: { displayText: "Video" }, type: 1 },
-{ buttonId: `${prefix}ytmp4 ${anu.url}`, buttonText: { displayText: "Audio" }, type: 1 }
+{ buttonId: `${prefix}ytmp4 ${anu.url}`, buttonText: { displayText: "Video" }, type: 1 },
+{ buttonId: `${prefix}ytmp3 ${anu.url}`, buttonText: { displayText: "Audio" }, type: 1 }
 ]
 let text_play =`*YOUTUBE PLAY*
 ⭔Title : ${anu.title}
